@@ -9,8 +9,6 @@ import br.org.curitiba.ici.gtm.entity.BancoEntity;
 import br.org.curitiba.ici.gtm.entity.PessoaEntity;
 import br.org.curitiba.ici.gtm.service.BancoService;
 import br.org.curitiba.ici.gtm.service.PessoaService;
-import br.org.curitiba.ici.gtm.validation.constraints.ExistsId;
-import br.org.curitiba.ici.gtm.validation.constraints.NotExistsId;
 import br.org.curitiba.ici.gtm.validation.constraints.ValoresPermitidosString;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +21,9 @@ import lombok.Setter;
 @Setter
 public class NovaAgenciaRequest {
 	
-	@NotExistsId(domainClass = AgenciaEntity.class, fieldName = "codPessoa", message="Já existe uma agência cadastrada para este código de pessoa.")
 	@NotNull(message = "Código pessoa não pode ser nulo")
 	private Integer codPessoa;
 	
-	@ExistsId(domainClass = BancoEntity.class, fieldName = "codBanco", message="Não existe um banco cadastrada para este código de banco.")
 	@NotNull(message = "Cod banco não pode ser nulo")
 	private Integer codBanco;
 	

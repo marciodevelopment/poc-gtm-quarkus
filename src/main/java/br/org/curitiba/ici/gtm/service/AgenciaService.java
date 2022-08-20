@@ -41,7 +41,7 @@ public class AgenciaService {
 	@Transactional
 	public void update(AgenciaEntity agencia) {
 		checkBancoParaPersistirAgencia(agencia);
-		agenciaRepository.persist(agencia);
+		agenciaRepository.getEntityManager().merge(agencia);
 		
 	}
 

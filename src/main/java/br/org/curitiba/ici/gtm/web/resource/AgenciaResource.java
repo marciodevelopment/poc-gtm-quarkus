@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -21,7 +21,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.org.curitiba.ici.gtm.entity.AgenciaEntity;
-import br.org.curitiba.ici.gtm.entity.BancoEntity;
 import br.org.curitiba.ici.gtm.service.AgenciaService;
 import br.org.curitiba.ici.gtm.service.BancoService;
 import br.org.curitiba.ici.gtm.service.PessoaService;
@@ -46,25 +45,21 @@ public class AgenciaResource {
 		return Response.created(URI.create("/agencias/cod-pessoa/" + agencia.getPessoa().getCodPessoa())).build();
 	}
 	
-	
+
 	@PUT
 	@Path(value = "/cod-pessoa/{cod-pessoa}")
 	public Response atualizar(@Valid AtualizacaoAgenciaRequest request, @PathParam("cod-pessoa") Integer codPessoa) {
-		Optional<AgenciaEntity> possivelAgencia = agenciaService.findByIdOptional(codPessoa); 
-		if (possivelAgencia.isEmpty()) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		BancoEntity banco = bancoService.getReference(request.getCodBanco());
-		AgenciaEntity agencia = possivelAgencia.get();
-		agencia.atualizar(banco, 
-				request.getCodAgencia(), 
-				request.getAgenciaCentralizadora(), 
-				request.getSituacaoAgenciaRetorno());
+		AgenciaEntity agencia = agenciaService.findByIdOptional(codPessoa)
+				.orElseThrow(() -> new NotFoundException("Agência não encontrada para o código pessoa."))
+				.atualizar(
+						bancoService.getReference(request.getCodBanco()), 
+						request.getCodAgencia(),
+						request.getAgenciaCentralizadora(), 
+						request.getSituacaoAgenciaRetorno());
 		agenciaService.update(agencia);
-		return Response.ok().build();
-		
+		return Response.noContent().build();
 	}
-	
+
 	@GET
 	public List<AgenciaResponse> pesquisar(@BeanParam PaginationRequest paginationRequest, @QueryParam("nome") Optional<String> nome) {
 		return agenciaService
@@ -76,7 +71,6 @@ public class AgenciaResource {
 	
 	@DELETE
 	@Path(value = "/cod-pessoa/{cod-pessoa}")
-	@Transactional
 	public Response delete(@PathParam("cod-pessoa") Integer codPessoa) {
 		if (agenciaService.deleteById(codPessoa))
 			return Response.ok().build();

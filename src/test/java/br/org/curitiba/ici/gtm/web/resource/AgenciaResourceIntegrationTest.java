@@ -4,7 +4,6 @@ import static io.restassured.RestAssured.given;
 
 import java.util.ArrayList;
 
-import javax.transaction.Transactional;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +27,6 @@ class AgenciaResourceIntegrationTest {
 	
 	@Order(1)
 	@Test
-	@Transactional
 	void deveSalvarUmaNovaAgencia() {
 		NovaAgenciaRequest agenciRequest = new NovaAgenciaRequest(codPessoaCriada, 2, 998, "A", true);
 		given()

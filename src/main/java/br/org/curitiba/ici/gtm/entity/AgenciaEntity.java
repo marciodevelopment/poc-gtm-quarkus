@@ -58,7 +58,7 @@ public class AgenciaEntity implements Serializable {
 		this.agenciaCentralizadora = agenciaCentralizadora;
 	}
 
-	public void atualizar(
+	public AgenciaEntity atualizar(
 			@NotNull BancoEntity banco, 
 			@NotNull Integer codAgencia, 
 			boolean agenciaCentralizadora, 
@@ -67,6 +67,7 @@ public class AgenciaEntity implements Serializable {
 		this.codAgencia = codAgencia;
 		this.agenciaCentralizadora = agenciaCentralizadora;
 		this.situacaoAgenciaRetorno = situacaoAgenciaRetorno;
+		return this;
 	}
 
 	
