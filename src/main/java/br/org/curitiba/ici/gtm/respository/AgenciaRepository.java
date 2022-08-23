@@ -30,17 +30,7 @@ public class AgenciaRepository implements PanacheRepositoryBase<AgenciaEntity, I
 	}
 
 	public boolean existsByIdPessoa(Integer codPessoa) {
-
-		String countQuery = " select count(*) "
-				+ " from AgenciaEntity a "
-				+ " where a.pessoa.codPessoa = :codPessoa ";
-		Long qtdeBanco = (Long) this
-		.getEntityManager()
-		.createQuery(countQuery)
-		.setParameter("codPessoa", codPessoa)
-		.setMaxResults(1)
-		.getSingleResult();
-		return qtdeBanco.intValue() > 0;
+		return count("pessoa.codPessoa", codPessoa) > 0;
 	}
 	
 	public boolean exists(PessoaEntity pessoa) {

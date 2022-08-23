@@ -64,7 +64,7 @@ class AgenciaResourceIntegrationTest {
 	        .body(atualizacao)
 	        .put(AGENCIAS + "/cod-pessoa/2")
 	        .then()
-	        .statusCode(Status.OK.getStatusCode());
+	        .statusCode(Status.NO_CONTENT.getStatusCode());
     }
     
 	

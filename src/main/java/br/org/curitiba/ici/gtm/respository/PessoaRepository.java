@@ -28,15 +28,6 @@ public class PessoaRepository implements PanacheRepositoryBase<PessoaEntity, Int
 	}
 	
 	public boolean notExistsById(Integer codPessoa) {
-		String countQuery = " select count(*) "
-				+ " from PessoaEntity pessoa "
-				+ " where pessoa.codPessoa = :codPessoa ";
-		Long qtdeBanco = (Long) this
-		.getEntityManager()
-		.createQuery(countQuery)
-		.setParameter("codPessoa", codPessoa)
-		.setMaxResults(1)
-		.getSingleResult();
-		return qtdeBanco.intValue() == 0;
+		return count("codPessoa", codPessoa) == 0;
 	}
 }
